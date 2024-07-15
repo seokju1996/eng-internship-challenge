@@ -1,3 +1,77 @@
+# **Summer 2024 Engineering Internship Application - Technical Challenge**
+
+This Pull Request contains a JavaScript implementation of a Playfair Cipher decrypter. 
+The Playfair Cipher is a manual symmetric encryption technique that employs a 5x5 grid of letters for encryption and decryption.
+
+## **How It Works**
+
+1. `createPlayfairTable(key)` function generates the Playfair Cipher table based on the given key "SUPERSPY".
+```
+INPUT: "SUPERSPY"
+OUTPUT: [ 'S', 'U', 'P', 'E', 'R', 'Y', 'A', 'B', 'C', 'D', 'F', 'G', 
+           'H', 'I', 'K', 'L', 'M', 'N', 'O', 'Q', 'T', 'V', 'W', 'X', 'Z' ]
+```
+2. `createPlayfairMatrix(table)` function converts the table into a 5x5 matrix.
+```
+INPUT: [ 'S', 'U', 'P', 'E', 'R', 'Y', 'A', 'B', 'C', 'D', 'F', 'G', 
+           'H', 'I', 'K', 'L', 'M', 'N', 'O', 'Q', 'T', 'V', 'W', 'X', 'Z' ]
+OUTPUT: [ 'S', 'U', 'P', 'E', 'R' ],
+        [ 'Y', 'A', 'B', 'C', 'D' ],
+        [ 'F', 'G', 'H', 'I', 'K' ],
+        [ 'L', 'M', 'N', 'O', 'Q' ],
+        [ 'T', 'V', 'W', 'X', 'Z' ]
+```
+3. `findPosition(matrix, char)` function finds the position of a character in the matrix.
+```
+INPUT: 
+matrix: [ 'S', 'U', 'P', 'E', 'R' ],
+        [ 'Y', 'A', 'B', 'C', 'D' ],
+        [ 'F', 'G', 'H', 'I', 'K' ],
+        [ 'L', 'M', 'N', 'O', 'Q' ],
+        [ 'T', 'V', 'W', 'X', 'Z' ]
+char: "U"
+OUTPUT: { row: 0, col: 1 }
+```
+
+4. `decrypt(text, key)` function decrypts the text using the Playfair Cipher algorithm.
+
+- When both letters are on the same row, select the letter to the left.
+
+```
+        if (pos1.row === pos2.row) { 
+            message += matrix[pos1.row][(pos1.col - 1 + 5) % 5];
+            message += matrix[pos2.row][(pos2.col - 1 + 5) % 5];
+```
+
+- When both letters are on the same column, select the letter on the top.
+
+```
+        } else if (pos1.col === pos2.col) {
+            message += matrix[(pos1.row - 1 + 5) % 5][pos1.col];
+            message += matrix[(pos2.row - 1 + 5) % 5][pos2.col];
+```
+
+- When both letters are neither in the same row nor the same column, select the counterpart letter.
+
+```
+        } else {
+            message += matrix[pos1.row][pos2.col];
+            message += matrix[pos2.row][pos1.col];
+        }
+```
+5. `solvePlayfairCipher` function uses the decryption process and outputs the decrypted message.
+
+## :tophat:
+```
+const ENCRYPTED_MESSAGE = "IKEWENENXLNQLPZSLERUMRHEERYBOFNEINCHCV";
+const KEY = "SUPERSPY";
+
+solvePlayfairCipher(ENCRYPTED_MESSAGE, KEY);
+```
+Output: `HIPPOPOTOMONSTROSESQUIPPEDALIOPHOBIA`
+
+
+
 # Engineering Internship
 ## Technical Assessment Challenge
 
